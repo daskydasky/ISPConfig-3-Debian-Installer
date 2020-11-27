@@ -67,7 +67,7 @@ if [ $ISPConfig_Installed = "No" ]; then
 	if [ $install_mode = "Quick" ]; then
 		install_Questions_Quick
 	elif [ $install_mode = "Advanced" ]; then
-		#exit
+		exit
 	fi
 	header "Setting up Repositories..."
 	$DISTRIBUTION.install_Repos
