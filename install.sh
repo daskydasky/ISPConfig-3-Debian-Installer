@@ -61,7 +61,6 @@ for file in $EXTRAPATH/*.install.sh; do
 	source $file
 done
 
-
 #Execute functions#
 if [ $ISPConfig_Installed = "No" ]; then
 	install_Questions
