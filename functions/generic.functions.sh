@@ -20,6 +20,71 @@ install_Questions (){
 if ! check_package "whiptail"; then
 	package_install whiptail
 fi
+
+install_mode=$(whiptail --title "Install mode" --backtitle "$back_title" --nocancel --radiolist "Choose install mode" 10 50 2 "Quick" "(default)" ON "Advanced" "" OFF 3>&1 1>&2 2>&3)
+
+}
+
+
+install_Questions_Quick (){
+
+#if ! check_package "whiptail"; then
+#	package_install whiptail
+#fi
+
+#Short hostname
+while [ "x$HOSTNAMESHORT" == "x" ]
+do
+HOSTNAMESHORT=$(whiptail --title "Short Hostname" --backtitle "$back_title" --inputbox "Please specify a Short Hostname (without domain part)" --nocancel 10 50 3>&1 1>&2 2>&3)
+done
+
+#FQDN hostname
+while [ "x$HOSTNAMEFQDN" == "x" ]
+do
+HOSTNAMEFQDN=$(whiptail --title "Fully Qualified Hostname" --backtitle "$back_title" --inputbox "Please specify a Fully Qualified Hostname" --nocancel 10 50 3>&1 1>&2 2>&3)
+done
+
+#Quick default settings
+install_web_server=Yes
+web_server="Apache"
+
+install_mail_server=Yes
+mail_server="Dovecot"
+
+sql_server="MariaDB"
+#maria_version = "x"
+
+while [ "x$mysql_pass" == "x" ]
+do
+mysql_pass=$(whiptail --title "MySQL Root Password" --backtitle "$back_title" --inputbox "Please specify a MySQL Root Password" --nocancel 10 50 3>&1 1>&2 2>&3)
+done
+
+install_ftp_server=Yes
+
+install_dns_server=Yes
+
+quota=Yes
+
+if (whiptail --title "Install Mailman" --backtitle "$back_title" --yesno "Setup Mailman?" 10 50) then
+	mailman=Yes
+	else
+	mailman=No
+fi
+if (whiptail --title "Install Jailkit" --backtitle "$back_title" --yesno "Setup User Jailkits?" 10 50) then
+	jailkit=Yes
+	else
+	jailkit=No
+fi
+
+}
+
+
+
+install_Questions_Advanced (){
+
+#if ! check_package "whiptail"; then
+#	package_install whiptail
+#fi
 #if (whiptail --title "IP Address Check" --backtitle "$back_title" --yesno "Is the Main IP of the Server? $base_ip" 10 50) then
 #	serverIP=base_ip
 #	else
@@ -56,14 +121,14 @@ if (whiptail --title "Install Mail Server" --backtitle "$back_title" --yesno "In
 fi
 while [ "x$sql_server" == "x" ]
 do
-sql_server=$(whiptail --title "SQL Server" --backtitle "$back_title" --nocancel --radiolist "Select SQL Server Software" 10 50 2 "MySQL" "(default)" ON "MariaDB" "" OFF 3>&1 1>&2 2>&3)
+sql_server=$(whiptail --title "SQL Server" --backtitle "$back_title" --nocancel --radiolist "Select SQL Server Software" 10 50 2 "MySQL" "" OFF "MariaDB" "(default)" ON 3>&1 1>&2 2>&3)
 done
 if [ $sql_server == "MariaDB" ]; then
 while [ "x$maria_version" == "x" ]
-do
-maria_version=$(whiptail --title "MariaDB Version" --backtitle "$back_title" --nocancel --radiolist "Select MariaDB Version" 10 50 2 "5.5" "(default)" ON "10.0" "" OFF 3>&1 1>&2 2>&3)
-done
-fi		
+#do
+#maria_version=$(whiptail --title "MariaDB Version" --backtitle "$back_title" --nocancel --radiolist "Select MariaDB Version" 10 50 2 "5.5" "(default)" ON "10.0" "" OFF 3>&1 1>&2 2>&3)
+#done
+#fi		
 while [ "x$mysql_pass" == "x" ]
 do
 mysql_pass=$(whiptail --title "MySQL Root Password" --backtitle "$back_title" --inputbox "Please specify a MySQL Root Password" --nocancel 10 50 3>&1 1>&2 2>&3)

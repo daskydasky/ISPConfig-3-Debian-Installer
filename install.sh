@@ -65,7 +65,14 @@ done
 #Execute functions#
 if [ $ISPConfig_Installed = "No" ]; then
 	install_Questions
+	if [ $install_mode = "Quick" ]; then
+		install_Questions_Quick
+	elif [ $install_mode = "Advanced" ]; then
+		#exit
+	fi
+	header "Setting up Repositories..."
 	$DISTRIBUTION.install_Repos
+	exit
 	header "Installing Basics..."
 	install_Basic
 	if [ $DISTRIBUTION == "ubuntu" ]; then

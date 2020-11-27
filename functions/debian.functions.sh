@@ -14,17 +14,24 @@ cp /etc/apt/sources.list /etc/apt/sources.list.backup
 echo '' >> /etc/apt/sources.list
 sed -i ':a;N;$!ba;s/main\n/main contrib non-free\n/g' /etc/apt/sources.list
 
-cat > /etc/apt/sources.list.d/dotdeb.list <<EOF
+#cat > /etc/apt/sources.list.d/dotdeb.list <<EOF
 # DotDeb
-deb http://packages.dotdeb.org wheezy all
-deb-src http://packages.dotdeb.org wheezy all
+#deb http://packages.dotdeb.org wheezy all
+#deb-src http://packages.dotdeb.org wheezy all
 
-EOF
+#EOF
 
-wget http://www.dotdeb.org/dotdeb.gpg
-cat dotdeb.gpg | apt-key add - 
+#wget http://www.dotdeb.org/dotdeb.gpg
+#cat dotdeb.gpg | apt-key add - 
+
+#Adding packages.sury.org
+#Reference: https://www.howtoforge.com/tutorial/how-to-install-php-7-for-ispconfig-3-from-debian-packages-on-debian-8-and-9/
+apt-get install -y apt-transport-https lsb-release ca-certificates
+wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
 
 apt-get update
+apt-get upgrade -y
 } #end function debian.install_Repos
 
 debian.install_MySQL () {
