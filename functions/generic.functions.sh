@@ -21,6 +21,10 @@ if ! check_package "whiptail"; then
 	package_install whiptail
 fi
 
+#Get server IP
+serverIP=$(hostname -I)
+
+#Select install mode
 install_mode=$(whiptail --title "Install mode" --backtitle "$back_title" --nocancel --radiolist "Choose install mode" 10 50 2 "Quick" "(default)" ON "Advanced" "" OFF 3>&1 1>&2 2>&3)
 
 }
@@ -186,19 +190,20 @@ package_install hostname
 
 #Set hostname and FQDN
 sed -i "s/${serverIP}.*/${serverIP} ${HOSTNAMEFQDN} ${HOSTNAMESHORT}/" /etc/hosts
-echo "$HOSTNAMEFQDN" > /etc/hostname
-/etc/init.d/hostname.sh start >/dev/null 2>&1
+hostnamectl set-hostname "$HOSTNAMESHORT"
+#echo "$HOSTNAMESHORT" > /etc/hostname
+#/etc/init.d/hostname.sh start >/dev/null 2>&1
 
 apt-get update
 apt-get -y upgrade
-apt-get install -y vim-nox dnsutils unzip rkhunter binutils sudo bzip2 zip
+apt-get install -y nano vim-nox dnsutils unzip rkhunter binutils sudo bzip2 zip
 
 echo "dash dash/sh boolean false" | debconf-set-selections
 dpkg-reconfigure -f noninteractive dash > /dev/null 2>&1
 
 #Synchronize the System Clock
 package_install ntp 
-package_install ntpdate
+#package_install ntpdate
 
 } # end function install_Basic
 
