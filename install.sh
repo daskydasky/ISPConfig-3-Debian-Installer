@@ -71,9 +71,9 @@ if [ $ISPConfig_Installed = "No" ]; then
 	fi
 	header "Setting up Repositories..."
 	$DISTRIBUTION.install_Repos
-	exit
 	header "Installing Basics..."
 	install_Basic
+	exit
 	if [ $DISTRIBUTION == "ubuntu" ]; then
 		ubuntu.install_DisableAppArmor
 	fi
